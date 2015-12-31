@@ -1,4 +1,4 @@
 module PythTree
 where
 
-oppositeAngle  _ _ = (5.0,5.0)
+oppositeAngle  h a = (h * cos a * cos a, h * cos a * sin a)
