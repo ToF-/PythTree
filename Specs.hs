@@ -5,7 +5,8 @@ margin = 0.00001
 
 shouldBeApprox (x,y) (x',y') = (rounded x,rounded y) `shouldBe` (x',y')
 
-shouldBeApproxShape pts pts' = map (\(x,y) -> (rounded x, rounded y)) pts `shouldBe` pts'
+shouldBeApproxShape (Shape pts) (Shape pts') 
+    = map (\(x,y) -> (rounded x, rounded y)) pts `shouldBe` pts'
 
 rounded x = (fromIntegral (round (x*10000)))/ 10000
 
@@ -19,10 +20,10 @@ main = hspec $ do
     describe "square and triangle" $ do 
         it "given a size and angle, yields a square and rectangle triangle" $ do
             squareAndTriangle 10.0 (pi/8)  `shouldBeApproxShape` 
-                [(0.0, 0.0)
-                ,(10.0, 0.0)
-                ,(10.0, 10.0)
-                ,(8.5355, 13.5355)
-                ,(0.0, 10.0)]
+                Shape [(0.0, 0.0)
+                      ,(10.0, 0.0)
+                      ,(10.0, 10.0)
+                      ,(8.5355, 13.5355)
+                      ,(0.0, 10.0)]
 
 
