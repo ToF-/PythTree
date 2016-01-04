@@ -1,5 +1,6 @@
 module PythTree
 where
+import Data.List (intersperse)
 
 type Size  = Float
 type Angle = Float
@@ -17,3 +18,10 @@ squareAndTriangle s a =
           ,(x ,  s+y)
           ,(0.0, s)]
         where (x,y) = oppositeAngle s a
+
+drawWithTikz :: Shape -> String
+drawWithTikz (Shape pts) = "\\path[fill] " ++ showAllPoints pts ++ " -- cycle;"
+    where showAllPoints :: [Point] -> String
+          showAllPoints pts = concat (intersperse " -- " (map show pts))
+
+

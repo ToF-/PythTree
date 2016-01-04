@@ -26,4 +26,10 @@ main = hspec $ do
                       ,(8.5355, 13.5355)
                       ,(0.0, 10.0)]
 
+    describe "drawWithTikZ" $ do
+        it "converts a shape to TikZ commands" $ do
+            drawWithTikz (Shape [(-5,-2),(3,1),(-4,4)]) `shouldBe` 
+                "\\path[fill] (-5.0,-2.0) -- (3.0,1.0) -- (-4.0,4.0) -- cycle;"
 
+            drawWithTikz (Shape [(5,2),(3,1),(4,4)]) `shouldBe` 
+                "\\path[fill] (5.0,2.0) -- (3.0,1.0) -- (4.0,4.0) -- cycle;"
