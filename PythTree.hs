@@ -6,6 +6,7 @@ type Size  = Float
 type Angle = Float
 type Point = (Float, Float)
 data Shape = Shape [Point]
+           | Shapes [Shape]
 
 oppositeAngle :: Size -> Angle -> Point
 oppositeAngle  h a = (h * cos a * cos a, h * cos a * sin a)
@@ -20,7 +21,11 @@ squareAndTriangle s a =
         where (x,y) = oppositeAngle s a
 
 drawWithTikz :: Shape -> String
-drawWithTikz (Shape pts) = "\\path[fill] " ++ showAllPoints pts ++ " -- cycle;"
+drawWithTikz = unlines . drawWithTikz'
+
+drawWithTikz' :: Shape -> [String]
+drawWithTikz' (Shapes shs) = concatMap drawWithTikz' shs
+drawWithTikz' (Shape pts) = ["\\path[fill] " ++ showAllPoints pts ++ " -- cycle;"]
     where showAllPoints :: [Point] -> String
           showAllPoints pts = concat (intersperse " -- " (map show pts))
 

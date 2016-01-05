@@ -29,7 +29,21 @@ main = hspec $ do
     describe "drawWithTikZ" $ do
         it "converts a shape to TikZ commands" $ do
             drawWithTikz (Shape [(-5,-2),(3,1),(-4,4)]) `shouldBe` 
-                "\\path[fill] (-5.0,-2.0) -- (3.0,1.0) -- (-4.0,4.0) -- cycle;"
+                "\\path[fill] (-5.0,-2.0) -- (3.0,1.0) -- (-4.0,4.0) -- cycle;\n"
 
             drawWithTikz (Shape [(5,2),(3,1),(4,4)]) `shouldBe` 
-                "\\path[fill] (5.0,2.0) -- (3.0,1.0) -- (4.0,4.0) -- cycle;"
+                "\\path[fill] (5.0,2.0) -- (3.0,1.0) -- (4.0,4.0) -- cycle;\n"
+
+    describe "a shape" $ do
+        it "can be a composition of shapes" $ do
+            let c = Shapes [Shape [(-5,-2),(3,1),(-4,4)]
+                           ,Shape [(5,2),(3,1),(4,4)]]
+                c' = Shapes [Shape [(0,0),(10,0),(0,10)], c]
+            drawWithTikz c `shouldBe` 
+                unlines ["\\path[fill] (-5.0,-2.0) -- (3.0,1.0) -- (-4.0,4.0) -- cycle;"
+                        ,"\\path[fill] (5.0,2.0) -- (3.0,1.0) -- (4.0,4.0) -- cycle;"]
+           
+            drawWithTikz c' `shouldBe` 
+                unlines ["\\path[fill] (0.0,0.0) -- (10.0,0.0) -- (0.0,10.0) -- cycle;"
+                        ,"\\path[fill] (-5.0,-2.0) -- (3.0,1.0) -- (-4.0,4.0) -- cycle;"
+                        ,"\\path[fill] (5.0,2.0) -- (3.0,1.0) -- (4.0,4.0) -- cycle;"]
