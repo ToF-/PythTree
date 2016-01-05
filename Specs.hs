@@ -47,3 +47,10 @@ main = hspec $ do
                 unlines ["\\path[fill] (0.0,0.0) -- (10.0,0.0) -- (0.0,10.0) -- cycle;"
                         ,"\\path[fill] (-5.0,-2.0) -- (3.0,1.0) -- (-4.0,4.0) -- cycle;"
                         ,"\\path[fill] (5.0,2.0) -- (3.0,1.0) -- (4.0,4.0) -- cycle;"]
+
+        it "can be a translation of a shape" $ do
+            let t = Translate (100.0, 150.0) (Shapes [Shape [(0,0),(10,0),(0,10)]
+                                                     ,Shape [(-50,-50),(-60,-50),(-50,-40)]])
+            toTikz t `shouldBe` 
+                unlines ["\\path[fill] (100.0,150.0) -- (110.0,150.0) -- (100.0,160.0) -- cycle;"
+                        ,"\\path[fill] (50.0,100.0) -- (40.0,100.0) -- (50.0,110.0) -- cycle;"]
