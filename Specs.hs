@@ -8,14 +8,13 @@ shouldBeApprox (x,y) (x',y') = (rounded x,rounded y) `shouldBe` (x',y')
 shouldBeApproxShape (Shape pts) (Shape pts') 
     = map (\(x,y) -> (rounded x, rounded y)) pts `shouldBe` pts'
 
-rounded x = (fromIntegral (round (x*10000)))/ 10000
 
 main = hspec $ do
     describe "opposite angle" $ do
         it "given hypothenuse finds the point of opposite angle" $ do
             oppositeAngle 1.0 (pi/4)  `shouldBeApprox`  (0.5,0.5)
-            oppositeAngle 10.0 (pi/8)  `shouldBeApprox`  (8.5355,3.5355) 
-            oppositeAngle 100.0 (pi/3) `shouldBeApprox` (25.0,43.3013)
+            oppositeAngle 10.0 (pi/8)  `shouldBeApprox`  (8.53553,3.53553) 
+            oppositeAngle 100.0 (pi/3) `shouldBeApprox` (25.0,43.30127)
 
     describe "square and triangle" $ do 
         it "given a size and angle, yields a square and rectangle triangle" $ do
@@ -23,7 +22,7 @@ main = hspec $ do
                 Shape [(0.0, 0.0)
                       ,(10.0, 0.0)
                       ,(10.0, 10.0)
-                      ,(8.5355, 13.5355)
+                      ,(8.53553, 13.53553)
                       ,(0.0, 10.0)]
 
     describe "toTikz" $ do
@@ -54,3 +53,10 @@ main = hspec $ do
             toTikz t `shouldBe` 
                 unlines ["\\path[fill] (100.0,150.0) -- (110.0,150.0) -- (100.0,160.0) -- cycle;"
                         ,"\\path[fill] (50.0,100.0) -- (40.0,100.0) -- (50.0,110.0) -- cycle;"]
+
+        it "can be a rotation of a shape" $ do
+            let r = Rotate (0.0,0.0) (pi/6) (Shapes [Shape [(0,0),(10,0),(0,10)]
+                                                    ,Shape [(2,2),(8,2),(2,8)]])
+            toTikz r `shouldBe` 
+                unlines ["\\path[fill] (0.0,0.0) -- (8.66025,5.0) -- (-5.0,8.66025) -- cycle;"
+                        ,"\\path[fill] (0.73205,2.73205) -- (5.9282,5.73205) -- (-2.26795,7.9282) -- cycle;"]
