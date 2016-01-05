@@ -20,12 +20,12 @@ squareAndTriangle s a =
           ,(0.0, s)]
         where (x,y) = oppositeAngle s a
 
-drawWithTikz :: Shape -> String
-drawWithTikz = unlines . drawWithTikz'
+toTikz :: Shape -> String
+toTikz = unlines . toTikz'
 
-drawWithTikz' :: Shape -> [String]
-drawWithTikz' (Shapes shs) = concatMap drawWithTikz' shs
-drawWithTikz' (Shape pts) = ["\\path[fill] " ++ showAllPoints pts ++ " -- cycle;"]
+toTikz' :: Shape -> [String]
+toTikz' (Shapes shs) = concatMap toTikz' shs
+toTikz' (Shape pts) = ["\\path[fill] " ++ showAllPoints pts ++ " -- cycle;"]
     where showAllPoints :: [Point] -> String
           showAllPoints pts = concat (intersperse " -- " (map show pts))
 
